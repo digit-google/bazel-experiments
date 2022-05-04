@@ -1,0 +1,91 @@
+# A regular cc_library
+cc_library(
+  name = "lib",
+  srcs = [ "src/pic_mode.cc" ],
+  hdrs = [ "src/pic_mode.h" ]
+)
+
+# A cc_library with "linkstatic = true"
+cc_library(
+  name = "lib_static",
+  srcs = [ "src/pic_mode.cc" ],
+  hdrs = [ "src/pic_mode.h" ],
+  # Disable generation of shared library.
+  linkstatic = True,
+)
+
+# A cc_library with -fPIE enforced through copts and linkopts
+cc_library(
+  name = "lib_pie",
+  srcs = [ "src/pic_mode.cc" ],
+  hdrs = [ "src/pic_mode.h" ],
+  linkopts = [ "-fPIE" ],
+  copts = [ "-fPIE" ]
+)
+
+# Various cc_binaries that link against the libraries above.
+
+# Default binary with default library.
+cc_binary(
+  name = "pic_mode",
+  srcs = [ "src/main.cc" ],
+  deps = [ ":lib" ]
+  # prints: main=pic lib=pic
+)
+
+# Default binary with static lib
+cc_binary(
+  name = "pic_mode_with_static_lib",
+  srcs = [ "src/main.cc" ],
+  deps = [ ":lib_static" ]
+  # prints: main=pic lib=pic
+)
+
+# Binary compiled with fully_static_link feature and default library.
+cc_binary(
+  name = "pic_mode_fully_static_link",
+  srcs = [ "src/main.cc" ],
+  deps = [ ":lib" ],
+  features = [ "fully_static_link" ]
+  # prints: main=pic lib=pic (!)
+)
+
+# Binary compiled with fully_static_link and static lib.
+cc_binary(
+  name = "pic_mode_fully_static_link_with_static_lib",
+  srcs = [ "src/main.cc" ],
+  deps = [ ":lib_static" ],
+  features = [ "fully_static_link" ]
+  # prints: main=pic lib=pic (!)
+)
+
+# Default binary that links againt lib_pie.
+cc_binary(
+  name = "pic_mode_with_pie_lib",
+  srcs = [ "src/main.cc" ],
+  deps = [ ":lib_pie" ],
+  # prints: main=pic lib=pie
+  # Note that this happens even if `bazel build --noforce_pic` is used!)
+)
+
+# Binary compile with fully_static_link and lib_pie.
+cc_binary(
+  name = "pic_mode_fully_static_link_with_pie_lib",
+  srcs = [ "src/main.cc" ],
+  deps = [ ":lib_pie" ],
+  features = [ "fully_static_link" ]
+  # prints: main=pic lib=pie
+  # Note that this happens even if `bazel build --noforce_pic` is used!)
+  # It looks like a static Linux executable is never produced.
+)
+
+# A CC binary that forces -fPIE for compiling its source code and linking
+# its final binary, and that depends in lib_pie. The only thing that works!
+cc_binary(
+  name = "pic_mode_all_pie",
+  srcs = [ "src/main.cc" ],
+  deps = [ ":lib_pie" ],
+  linkopts = [ "-fPIE" ],
+  copts = [ "-fPIE" ]
+  # prints main-pie lib=pie
+)
