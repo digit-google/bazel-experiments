@@ -1,1 +1,3 @@
+# Ignore bazel-out, bazel-bin, bazel-test-logs and bazel-<project_name>
+# Note that this prevents any of our sub-directories to begin with `bazel-`
 bazel-*
