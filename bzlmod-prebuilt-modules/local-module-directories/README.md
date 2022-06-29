@@ -1,8 +1,4 @@
-A test case for providing prebuilt Bazel modules (through BzlMod) so that
-`bazel build`  will not try to download them on-demand. For context see
-https://fxbug.dev/103106
-
-This example does not try to use a custom registry, instead each module
+This example does not try to use a custom BzlMode registry, instead each module
 is provided as a directory under prebuilt/ that provides its own MODULE.bazel
 file.
 
