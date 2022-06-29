@@ -1,0 +1,7 @@
+# TODO(digit): describe this package.
+load("//:rules.bzl", "write_hello")
+
+write_hello(
+  name = "hello",
+  output = "hello1.txt"
+)

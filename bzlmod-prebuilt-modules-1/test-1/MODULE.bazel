@@ -1,0 +1,29 @@
+module(
+    name = "bzlmod-prebuilt-modules-test-1",
+    compatibility_level = 1,
+    version = "0.0.1",
+)
+
+_PREBUILT_DIR = "../prebuilt/"
+
+# @platforms/ repository.
+local_path_override(
+    module_name = "platforms",
+    path = _PREBUILT_DIR + "platforms-0.0.4",
+)
+
+bazel_dep(
+    name = "platforms",
+    version = "0.0.4",
+)
+
+# @bazel_skylib repository.
+local_path_override(
+    module_name = "bazel_skylib",
+    path = _PREBUILT_DIR + "bazel-skylib-1.0.3",
+)
+
+bazel_dep(
+    name = "bazel_skylib",
+    version = "1.0.3",
+)
