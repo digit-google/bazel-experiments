@@ -1,0 +1,2 @@
+# Enable BzlMode usage (https://bazel.build/docs/bzlmod)
+common --experimental_enable_bzlmod

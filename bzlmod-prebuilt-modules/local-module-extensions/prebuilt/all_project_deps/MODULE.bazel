@@ -1,0 +1,5 @@
+module(
+  name = "all_project_deps",
+  version = "0.0.0",
+  compatibility_level = 1,
+)

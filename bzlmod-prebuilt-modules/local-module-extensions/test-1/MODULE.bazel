@@ -1,0 +1,18 @@
+_PREBUILT_DIR = "../prebuilt/"
+
+# @all_project_deps// repository.
+bazel_dep(
+    name = "all_project_deps",
+    version = "0.0.0",
+)
+
+local_path_override(
+    module_name = "all_project_deps",
+    path = _PREBUILT_DIR + "all_project_deps",
+)
+
+all_deps = use_extension("@all_project_deps//:extensions.bzl", "all_deps")
+use_repo(
+    all_deps,
+    "platforms",
+    "bazel_skylib")
