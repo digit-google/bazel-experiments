@@ -6,6 +6,8 @@ Unfortunately, that doesn't work because `native.local_repository()` is not
 supported yet in module extensions (this is documented as a footnote in the
 [BzlMod Migration Guide](https://docs.google.com/document/d/1JtXIVnXyFZ4bmbiBCr5gsTH4-opZAFf5DMMb-54kES0/edit?usp=sharing))
 
+Tracking bug: https://github.com/bazelbuild/bazel/issues/15412
+
 Note that `prebuilt/all_project_deps/BUILD.bazel` is empty but required,
 otherwise Bazel will complain when trying to load the `extensions.bzl` file.
 
