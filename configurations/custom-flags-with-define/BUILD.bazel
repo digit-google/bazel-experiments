@@ -1,0 +1,35 @@
+load(":rules.bzl", "write_hello", "gen_concat_script")
+
+config_setting(
+  name = "is_foo",
+  define_values = {
+    "foo": "True",
+  }
+)
+
+# //:hello1 just generates a hello1.txt file.
+write_hello(
+  name = "hello1",
+  output = "hello1.txt",
+)
+
+# //:concat is the tool used to concatenate files.
+# it will be generated in the host configuration.
+gen_concat_script(
+  name = "concat",
+  output = "concat.sh",
+  condition = select({
+    "//:is_foo": True,
+    "//conditions:default": False,
+  }),
+)
+
+# //:hello2 is the target that copies hello1 using
+# the `concat` host tool.
+genrule(
+  name = "hello2",
+  srcs = [ ":hello1" ],
+  outs = [ "hello2.txt" ],
+  cmd = "$(location :concat) $< > $@",
+  tools = [ ":concat" ]
+)
