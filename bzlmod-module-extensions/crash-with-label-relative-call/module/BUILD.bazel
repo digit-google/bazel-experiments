@@ -1,0 +1,2 @@
+# This empty file is required to avoid Bazel complaining that `extensions.bzl`
+# does not belong to a package when referencing it from a MODULE.bazel file.

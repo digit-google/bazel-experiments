@@ -1,0 +1,20 @@
+module(
+    name = "main",
+    version = "1.0",
+)
+
+bazel_dep(
+    name = "module",
+    version = "1",
+)
+
+local_path_override(
+    module_name = "module",
+    path = "../module",
+)
+
+ext = use_extension("@module//:extensions.bzl", "ext")
+
+ext.wanted(label = ":empty")
+
+use_repo(ext, "generated")
