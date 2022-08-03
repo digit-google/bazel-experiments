@@ -1,0 +1,3 @@
+load(":repository_rules.bzl", "repo_rule")
+
+repo_rule(name = "generated")
