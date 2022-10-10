@@ -1,0 +1,33 @@
+"""
+Experimental use of transitions to build ELF shared libraries with -fPIC and
+ELF executables with -fPIE.
+"""
+
+load("//:defs.bzl", "cc_executable", "cc_shared_library")
+
+# A library which will be linked to both an executable and a shared library.
+# and thus will need to be compiled twice, once with -fPIC, and once with
+# -fPIE, respectively.
+cc_library(
+    name = "common",
+    srcs = ["common.cc"],
+    hdrs = ["common.h"],
+)
+
+cc_executable(
+    name = "program",
+    srcs = ["program.cc"],
+    deps = [":common"],
+)
+
+cc_shared_library(
+    name = "sharedlib",
+    srcs = ["sharedlib.cc"],
+    deps = [":common"],
+)
+
+cc_executable(
+    name = "program2",
+    srcs = ["program2.cc"],
+    deps = [":sharedlib"],
+)
