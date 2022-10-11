@@ -55,3 +55,13 @@ Summaries (see the `README.md` file in each sub-directory for details):
     symlinking all outputs from the genrule to their same location in the
     dependent's build configuration. This works as long as the dependent is
     not in the unique build configuration already.
+
+- transitions-5:
+    A final example that changes the implementation of the `unique_genrule`
+    macro to allow building the target genrule in any build configuration,
+    including when the dependent is already in the unique one.
+
+    Finally! Something that "just" works (though with wrapper macros).
+
+ProTip: use `diff -burN --exclude=README.md transitions-<N> transitions-<N+1>`
+to see the differences between two examples to understand what's going on.

@@ -1,14 +1,15 @@
 Abstract:
 ---------
 
-A first example that demonstrate how to build PIE-optimized ELF executables and
-PIC-optimized ELF shared libraries in a single build invocation.
+A first example that demonstrates how to build PIE-optimized ELF executables
+and PIC-optimized ELF shared libraries in a single build invocation.
 Currently only works on Linux.
 
 Testing:
 ------
 
-Run the `run_tests.sh` in the workspace directory.
+Run the `run_tests.sh` in the workspace directory. This works, but see the
+other examples for more information.
 
 Implementation Note:
 --------------------
@@ -126,4 +127,4 @@ are extra steps / wrappers necessary ?
 When not building for an ELF system (e.g. Windows or MacOS), can we avoid
 introducing intermediate targets that will do nothing? It seems that is not
 possible since the build configuration is not visible when macros are
-processed. Is the 'cfg' attribute configurable?
+processed. The 'cfg' attribute itself is not configurable.
