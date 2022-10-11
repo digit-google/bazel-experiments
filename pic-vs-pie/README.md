@@ -49,3 +49,9 @@ Summaries (see the `README.md` file in each sub-directory for details):
 
     Unfortunately, trying to include the generated header in dependents
     (e.g. from //src:program.cc and //src:sharedlib.cc) now fails.
+
+- transitions-4:
+    A fourth example that solves the issue found in the previous one by
+    symlinking all outputs from the genrule to their same location in the
+    dependent's build configuration. This works as long as the dependent is
+    not in the unique build configuration already.
