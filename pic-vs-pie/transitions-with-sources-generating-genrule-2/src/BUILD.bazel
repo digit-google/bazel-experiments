@@ -1,0 +1,60 @@
+"""
+Experimental use of transitions to build ELF shared libraries with -fPIC and
+ELF executables with -fPIE.
+"""
+
+load("//:defs.bzl", "cc_executable", "cc_shared_library", "filter_outputs", "unique_genrule")
+
+# A single genrule() that generates both the header and the source for
+# the common library.
+unique_genrule(
+    name = "generate_common",
+    srcs = ["generate_common_lib.sh"],
+    outs = [
+        "common.cc",
+        "common.h",
+    ],
+    cmd = "./$(location generate_common_lib.sh) $(OUTS)",
+    message = "Generating common library sources",
+)
+
+# It is impossible to pick individual outputs from a genrule from other
+# targets, so create intermediate ones to filter them into different sets.
+filter_outputs(
+    name = "common_sources",
+    srcs = [":generate_common"],
+    extensions = [".cc"],
+)
+
+filter_outputs(
+    name = "common_headers",
+    srcs = [":generate_common"],
+    extensions = [".h"],
+)
+
+# A library which will be linked to both an executable and a shared library.
+# and thus will need to be compiled twice, once with -fPIC, and once with
+# -fPIE, respectively.
+cc_library(
+    name = "common",
+    srcs = [":common_sources"],
+    hdrs = [":common_headers"],
+)
+
+cc_executable(
+    name = "program",
+    srcs = ["program.cc"],
+    deps = [":common"],
+)
+
+cc_shared_library(
+    name = "sharedlib",
+    srcs = ["sharedlib.cc"],
+    deps = [":common"],
+)
+
+cc_executable(
+    name = "program2",
+    srcs = ["program2.cc"],
+    deps = [":sharedlib"],
+)
