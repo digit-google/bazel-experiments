@@ -1,0 +1,18 @@
+load("//:defs.bzl", "my_data_dep", "print_runfiles")
+
+my_data_dep(
+  name = "data_dep",
+  src = "foo.txt",
+  dst = "data/foo.txt",
+)
+
+cc_library(
+  name = "library",
+  srcs = [ "lib.cc" ],
+  data = [ ":data_dep" ],
+)
+
+print_runfiles(
+  name = "print_runfiles",
+  target = ":library",
+)
